@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # Plan
-# - import libs - urllib, argparse, gzip, logger
+# √ - import libs - urllib, argparse, gzip, logging (syslog)
 # √ - receive command line arguments from user input using argparse
 # √ - use urllib for http get request to Debian mirror to create a
 #  local copy of Contents file of architecture requested by user
@@ -11,13 +11,14 @@
 # associated with them, in descending order (largest printed first)
 # √ - amend package names printed to screen
 # - alignment of counted items
-# - implement basic logging
-# √ - implement basic error handling
-# - implement basic testing
+# √ - implement basic logging to syslog
+# √ - implement basic error handling (with try...except)
+# - implement basic automated testing with unittest
 
 import argparse
 import urllib.request
 import gzip
+import syslog
 
 parser = argparse.ArgumentParser(description='Select an architecture')
 parser.add_argument('arch', type=str, help='architecture')
@@ -32,7 +33,8 @@ try:
         )
     )
 except:
-    print('Could not reach mirror.')
+    print('Cannot connect to Debian mirror.')
+    syslog.syslog(syslog.LOG_CRIT, 'Cannot connect to Debian mirror.')
     quit()
 
 
