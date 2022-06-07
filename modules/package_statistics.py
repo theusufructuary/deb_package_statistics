@@ -10,7 +10,7 @@
 # √ - print names of the top 10 packages and the number of files
 # associated with them, in descending order (largest printed first)
 # √ - amend package names printed to screen
-# - alignment of counted items
+# - alignment of printed columns
 # √ - implement basic logging to syslog
 # √ - implement basic error handling (with try...except)
 # - implement basic automated testing with unittest
@@ -34,8 +34,11 @@ try:
         )
     )
 except ConnectionError:
-    print('Cannot connect to Debian mirror.')
+    print('Cannot connect to Debian mirror')
     syslog.syslog(syslog.LOG_CRIT, 'Cannot connect to Debian mirror.')
+    quit()
+except urllib.error.HTTPError:
+    print('Architecture not found')
     quit()
 
 
