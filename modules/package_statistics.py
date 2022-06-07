@@ -20,6 +20,8 @@ import urllib.request
 import gzip
 import syslog
 
+# Function definitions
+
 
 def get_contents_file(args):
     try:
@@ -39,6 +41,7 @@ def get_contents_file(args):
     except urllib.error.URLError:
         print('Cannot connect to Debian mirror')
         syslog.syslog(syslog.LOG_CRIT, 'Cannot connect to Debian mirror.')
+        quit()
 
 
 def format_lines():
@@ -70,6 +73,8 @@ def sort_list():
         print(f"{key}{value : >10}")
 
 
+# Main code
+
 parser = argparse.ArgumentParser(description='Select an architecture')
 
 parser.add_argument('arch', type=str, help='architecture')
@@ -77,6 +82,7 @@ parser.add_argument('arch', type=str, help='architecture')
 args = parser.parse_args()
 
 contents = get_contents_file(args)
+print(contents)
 
 contents_dec = gzip.open(contents)
 
