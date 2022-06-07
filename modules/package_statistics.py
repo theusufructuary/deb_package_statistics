@@ -36,6 +36,9 @@ def get_contents_file(args):
     except urllib.error.HTTPError:
         print('Architecture not found')
         quit()
+    except urllib.error.URLError:
+        print('Cannot connect to Debian mirror')
+        syslog.syslog(syslog.LOG_CRIT, 'Cannot connect to Debian mirror.')
 
 
 def format_lines():
