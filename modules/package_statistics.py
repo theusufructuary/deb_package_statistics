@@ -20,49 +20,63 @@ import urllib.request
 import gzip
 import syslog
 
+
+def get_contents_file(args):
+    try:
+        return urllib.request.urlopen(
+            'http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'
+            .format(
+                args.arch
+            )
+        )
+    except ConnectionError:
+        print('Cannot connect to Debian mirror')
+        syslog.syslog(syslog.LOG_CRIT, 'Cannot connect to Debian mirror.')
+        quit()
+    except urllib.error.HTTPError:
+        print('Architecture not found')
+        quit()
+
+
+def format_lines():
+
+    counter = dict()
+
+    for line in contents_dec:
+        words = line.split()
+
+        for word in words:
+            index = word.find(b'/')
+            wordReduced = word[index + 1:]
+            counter[wordReduced] = counter.get(wordReduced, 0) + 1
+
+    return counter
+
+
+def sort_list():
+
+    countedList = list()
+
+    for key, value in counter.items():
+        countedTup = (value, key)
+        countedList.append(countedTup)
+
+    sortedCountedList = sorted(countedList, reverse=True)
+
+    for value, key in sortedCountedList[0:10]:
+        print(f"{key}{value : >10}")
+
+
 parser = argparse.ArgumentParser(description='Select an architecture')
+
 parser.add_argument('arch', type=str, help='architecture')
 
 args = parser.parse_args()
 
-
-try:
-    contents = urllib.request.urlopen(
-        'http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'
-        .format(
-            args.arch
-        )
-    )
-except ConnectionError:
-    print('Cannot connect to Debian mirror')
-    syslog.syslog(syslog.LOG_CRIT, 'Cannot connect to Debian mirror.')
-    quit()
-except urllib.error.HTTPError:
-    print('Architecture not found')
-    quit()
-
+contents = get_contents_file(args)
 
 contents_dec = gzip.open(contents)
 
+counter = format_lines()
 
-counter = dict()
-
-for line in contents_dec:
-    words = line.split()
-
-    for word in words:
-        index = word.find(b'/')
-        wordReduced = word[index + 1:]
-        counter[wordReduced] = counter.get(wordReduced, 0) + 1
-
-
-countedList = list()
-
-for key, value in counter.items():
-    countedTup = (value, key)
-    countedList.append(countedTup)
-
-sortedCountedList = sorted(countedList, reverse=True)
-
-for value, key in sortedCountedList[0:10]:
-    print(f"{key}{value : >10}")
+sort_list()
