@@ -1,30 +1,53 @@
 #!/usr/bin/python3
 
 # Plan
-# - import libs - urllib, argparse, requests, gzip, logger
+# - import libs - urllib, argparse, gzip, logger
 # √ - receive command line arguments from user input using argparse
 # √ - use urllib for http get request to Debian mirror to create a
 #  local copy of Contents file of architecture requested by user
-# - for loop to parse each line of the Contents file and count
+# √ - for loop to parse each line of the Contents file and count
 # number of files associated with each package, storing results in an object
-    # use split() to split first from second word on each line
-# - print names of the top 10 packages and the number of files
+# √ - print names of the top 10 packages and the number of files
 # associated with them, in descending order (largest printed first)
+# - amend package names printed to screen
+# - implement logging
+# - implement testing
 
 import argparse
-import urllib
-import requests
+import urllib.request
 import gzip
 
 parser = argparse.ArgumentParser(description='Select an architecture')
 parser.add_argument('arch', type=str, help='architecture')
 
 args = parser.parse_args()
-# print('args:', vars(args))
 
 
-contents = urllib.request.urlopen('http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'.format(args.arch))
+contents = urllib.request.urlopen(
+    'http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'.format(
+        args.arch
+    )
+)
 
 contents_dec = gzip.open(contents)
 
-print(contents_dec.read(200))
+
+counter = dict()
+
+for line in contents_dec:
+    words = line.split()
+
+    for word in words:
+        counter[word] = counter.get(word, 0) + 1
+
+
+countedList = list()
+
+for key, value in counter.items():
+    countedTup = (value, key)
+    countedList.append(countedTup)
+
+sortedCountedList = sorted(countedList, reverse=True)
+
+for value, key in sortedCountedList[0:10]:
+    print(f"{key}{value : >10}")
