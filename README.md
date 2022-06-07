@@ -19,7 +19,7 @@ Command line Python program that takes an architecture as an argument and then d
 <br>
 
 ### Code Plan
-    # import required libs - urllib, argparse, requests
+    # import required libs - urllib, argparse, requests, logger
     # receive command line arguments from user input
     # http get request to Debian mirror to create a local copy of Contents file of architecture requested by user
     # for loop to parse each line of the Contents file and count number of files associated with each package, storing results in an object
@@ -30,7 +30,9 @@ Command line Python program that takes an architecture as an argument and then d
 ### Tech/Work Stack
 
 - Python 3
+    - PIP
     - Flake8
+    - Black
     - unittest
 
 - IDE
