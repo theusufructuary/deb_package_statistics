@@ -28,11 +28,12 @@ args = parser.parse_args()
 
 try:
     contents = urllib.request.urlopen(
-        'http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'.format(
+        'http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'
+        .format(
             args.arch
         )
     )
-except:
+except ConnectionError:
     print('Cannot connect to Debian mirror.')
     syslog.syslog(syslog.LOG_CRIT, 'Cannot connect to Debian mirror.')
     quit()
