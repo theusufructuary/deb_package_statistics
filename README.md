@@ -36,6 +36,7 @@ I included some basic functionality for testing, logging, and error handling whi
 I also organised my project into functions, although I only officially declared them as functions later on in the project. One reflection I have is that I should have declared these functions at the beginning of the project.
 
 #### **What would I do next?**
+- Ask for help from another Python developer for help with using __init__.py to import files between folders as I wasn't able to get that to work in the ideal project folder structure (modules and tests in their own folders).
 - With another two hours, I expect to have completed all the remaining tests I wrote in comments in the test file so there's a complete set of basic cautomated tests that check for correct functionality of the program.
 - An additional hour would allow for enhancing the error handling for the program, ensuring other exceptions are covered by the program.
 - Another two hours would give time for planning and improving the logging capabilities and coverage, exploring what would be useful as developers to log and where to send different log-level messages to.
@@ -69,3 +70,4 @@ Thank you for your time.
     - Manual testing in Ubuntu Shell
     - Documentation in Markdown
     - Internet for syntax and problem-solving assistance
+    - I reached out to a friend to help point me understand argparse quickly
