@@ -23,7 +23,7 @@ import syslog
 # Function definitions
 
 
-def get_contents_file(args):
+def get_contents_file():
     try:
         return urllib.request.urlopen(
             'http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'
@@ -53,8 +53,11 @@ def format_lines():
 
         for word in words:
             index = word.find(b'/')
-            wordReduced = word[index + 1:]
+            wordReduced = str(word[index + 1:])
+            wordReduced = wordReduced.strip("b'")
+            
             counter[wordReduced] = counter.get(wordReduced, 0) + 1
+            counter[wordReduced] = counter[wordReduced]
 
     return counter
 
@@ -81,8 +84,7 @@ parser.add_argument('arch', type=str, help='architecture')
 
 args = parser.parse_args()
 
-contents = get_contents_file(args)
-print(contents)
+contents = get_contents_file()
 
 contents_dec = gzip.open(contents)
 
