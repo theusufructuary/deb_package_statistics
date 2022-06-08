@@ -13,7 +13,10 @@
 # √ - alignment of printed columns
 # √ - implement basic logging to syslog
 # √ - implement basic error handling (with try...except)
-# - implement basic automated testing with unittest
+# √ - implement basic automated testing with unittest
+
+
+# Imports
 
 import argparse
 import urllib.request
@@ -23,7 +26,7 @@ import syslog
 # Function definitions
 
 
-def get_contents_file():
+def get_contents_file(args):
     try:
         return urllib.request.urlopen(
             'http://ftp.uk.debian.org/debian/dists/stable/main/Contents-{}.gz'
@@ -44,7 +47,7 @@ def get_contents_file():
         quit()
 
 
-def format_lines():
+def format_lines(contents_dec):
 
     counter = dict()
 
@@ -57,12 +60,11 @@ def format_lines():
             wordReduced = wordReduced.strip("b'")
 
             counter[wordReduced] = counter.get(wordReduced, 0) + 1
-            counter[wordReduced] = counter[wordReduced]
 
     return counter
 
 
-def sort_list():
+def sort_list(counter):
 
     countedList = list()
 
@@ -84,10 +86,10 @@ parser.add_argument('arch', type=str, help='architecture')
 
 args = parser.parse_args()
 
-contents = get_contents_file()
+contents = get_contents_file(args)
 
 contents_dec = gzip.open(contents)
 
-counter = format_lines()
+counter = format_lines(contents_dec)
 
-sort_list()
+sort_list(counter)
