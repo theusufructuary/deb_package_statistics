@@ -10,7 +10,7 @@
 # √ - print names of the top 10 packages and the number of files
 # associated with them, in descending order (largest printed first)
 # √ - amend package names printed to screen
-# - alignment of printed columns
+# √ - alignment of printed columns
 # √ - implement basic logging to syslog
 # √ - implement basic error handling (with try...except)
 # - implement basic automated testing with unittest
@@ -55,7 +55,7 @@ def format_lines():
             index = word.find(b'/')
             wordReduced = str(word[index + 1:])
             wordReduced = wordReduced.strip("b'")
-            
+
             counter[wordReduced] = counter.get(wordReduced, 0) + 1
             counter[wordReduced] = counter[wordReduced]
 
@@ -73,7 +73,7 @@ def sort_list():
     sortedCountedList = sorted(countedList, reverse=True)
 
     for value, key in sortedCountedList[0:10]:
-        print(f"{key}{value : >10}")
+        print(f"{key: <40}{value}")
 
 
 # Main code
