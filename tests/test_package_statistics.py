@@ -2,9 +2,9 @@
 
 import unittest
 
-from http.client import HTTPResponse
+from modules import package_statistics
 
-import package_statistics
+from http.client import HTTPResponse
 
 
 class TestPackageStatistics(unittest.TestCase):

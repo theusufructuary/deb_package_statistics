@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/bin/python3
 
 # Plan
 # √ - import libs - urllib, argparse, gzip, logging (syslog)
